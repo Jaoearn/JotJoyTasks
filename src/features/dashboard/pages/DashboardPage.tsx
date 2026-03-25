@@ -9,10 +9,10 @@ const DashboardPage = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const [taskslist, setTasksList] = useState<TaskItemType[]>([
-    { title: "Complete your first Task", reward: "strength +10", status: "todo" },
-    { title: "Collect 100 coins", reward: "coins +10", status: "todo" },
-    { title: "Improve intelligence", reward: "intelligence +10", status: "progress" },
-    { title: "Help a friend", reward: "charisma +10", status: "done" },
+    { title: "Complete your first Task", detail: "strength +1077777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777775555555555555555555555", status: "todo" },
+    { title: "Collect 100 coins", detail: "coins +10", status: "todo" },
+    { title: "Improve intelligence", detail: "intelligence +10", status: "progress" },
+    { title: "Help a friend", detail: "charisma +10", status: "done" },
   ]);
 
   const stats = [
@@ -70,6 +70,7 @@ const DashboardPage = () => {
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
         addTask={addTask}
+        darkMode={darkMode}
       />
 
     </div>

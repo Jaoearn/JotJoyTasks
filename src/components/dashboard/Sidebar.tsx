@@ -64,7 +64,7 @@ const Sidebar = ({
         {!collapsed && (
           <>
             <h2 className="text-xl font-bold text-center">
-              Welcome, <span className="text-purple-400">Adventurer</span>
+              <span className="text-purple-400">Jot Joy</span>
             </h2>
 
             <div className="w-full flex justify-between text-sm">

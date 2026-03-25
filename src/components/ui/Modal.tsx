@@ -8,6 +8,7 @@ interface ModalProps {
   showCloseButton?: boolean;
   isFullscreen?: boolean;
   disableTransition?: boolean;
+  darkMode?: boolean; // ✅ เพิ่ม
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -18,6 +19,7 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   isFullscreen = false,
   disableTransition = false,
+  darkMode = false, // ✅ default
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -39,10 +41,18 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
-  const transitionClass = disableTransition ? "" : "transition-all duration-300 ease-out";
+  const transitionClass = disableTransition
+    ? ""
+    : "transition-all duration-300 ease-out";
+
   const contentClasses = isFullscreen
     ? "w-full h-full"
-    : `relative w-full max-w-[60vw] rounded-3xl bg-white dark:bg-gray-900 shadow-2xl border border-gray-200 dark:border-gray-700 ${transitionClass}`;
+    : `relative w-full max-w-[60vw] rounded-3xl shadow-2xl border ${transitionClass}
+       ${
+         darkMode
+           ? "bg-gray-900 border-gray-700 text-white"
+           : "bg-white border-gray-200 text-gray-800"
+       }`;
 
   return (
     <div
@@ -51,7 +61,12 @@ export const Modal: React.FC<ModalProps> = ({
     >
       {!isFullscreen && (
         <div
-          className="fixed inset-0 h-full w-full bg-white/10 dark:bg-black/10 backdrop-blur-sm"
+          className={`fixed inset-0 h-full w-full backdrop-blur-sm
+          ${
+            darkMode
+              ? "bg-black/40"
+              : "bg-white/30"
+          }`}
           onClick={onClose}
         />
       )}
@@ -63,14 +78,19 @@ export const Modal: React.FC<ModalProps> = ({
         {showCloseButton && (
           <button
             onClick={onClose}
-            className="absolute right-3 top-2 z-50 flex h-9.5 w-9.5 items-center justify-center bg-transparent text-red-500 transition-colors hover:text-red-600 dark:hover:text-red-500 sm:right-6 sm:top-4 sm:h-11 sm:w-11"
+            className={`absolute right-3 top-2 z-50 flex h-9.5 w-9.5 items-center justify-center 
+            transition-colors sm:right-6 sm:top-4 sm:h-11 sm:w-11
+            ${
+              darkMode
+                ? "text-red-400 hover:text-red-300"
+                : "text-red-500 hover:text-red-600"
+            }`}
           >
             <svg
               width="24"
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 fillRule="evenodd"
