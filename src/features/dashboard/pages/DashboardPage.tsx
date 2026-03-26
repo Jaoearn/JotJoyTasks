@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../../../components/dashboard/Sidebar";
-import KanbanBoard, { type TaskItemType } from "../../../components/dashboard/KanbanBoard";
+import KanbanBoard, {
+  type TaskItemType,
+} from "../../../components/dashboard/KanbanBoard";
 import CreateTaskModal from "../../../components/dashboard/CreateTaskModal";
 
 const DashboardPage = () => {
@@ -8,26 +10,35 @@ const DashboardPage = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const [taskslist, setTasksList] = useState<TaskItemType[]>([
-    { title: "Complete your first Task", detail: "strength +1077777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777775555555555555555555555", status: "todo" },
-    { title: "Collect 100 coins", detail: "coins +10", status: "todo" },
-    { title: "Improve intelligence", detail: "intelligence +10", status: "progress" },
-    { title: "Help a friend", detail: "charisma +10", status: "done" },
-  ]);
+  const [taskslist, setTasksList] = useState<TaskItemType[]>(() => {
+    const stored = localStorage.getItem("tasks");
+    if (stored) {
+      try {
+        return JSON.parse(stored) as TaskItemType[];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(taskslist));
+  }, [taskslist]);
 
   const stats = [
     {
       title: "To Do",
-      value: taskslist.filter((t) => t.status === "todo").length
+      value: taskslist.filter((t) => t.status === "todo").length,
     },
     {
       title: "In Progress",
-      value: taskslist.filter((t) => t.status === "progress").length
+      value: taskslist.filter((t) => t.status === "progress").length,
     },
     {
       title: "Done",
-      value: taskslist.filter((t) => t.status === "done").length
-    }
+      value: taskslist.filter((t) => t.status === "done").length,
+    },
   ];
 
   const addTask = (task: TaskItemType) => {
@@ -35,8 +46,11 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className={`flex h-screen p-6 gap-6 ${darkMode ? "bg-[#0f0f12] text-white" : "bg-gray-100"}`}>
-      
+    <div
+      className={`flex h-screen p-6 gap-6 ${
+        darkMode ? "bg-[#0f0f12] text-white" : "bg-gray-100"
+      }`}
+    >
       <Sidebar
         collapsed={collapsed}
         setCollapsed={setCollapsed}
@@ -46,10 +60,14 @@ const DashboardPage = () => {
         tasks={taskslist}
       />
 
-      <div className={`flex-1 rounded-2xl p-6 ${darkMode ? "bg-gray-900" : "bg-white"}`}>
-        
+      <div
+        className={`flex-1 rounded-2xl p-6 ${
+          darkMode ? "bg-gray-900" : "bg-white"
+        }`}
+      >
         <div className="flex justify-between mb-6">
           <h1 className="text-2xl font-bold">Active Tasks</h1>
+
           <button
             onClick={() => setOpenModal(true)}
             className="bg-purple-500 px-4 py-2 rounded-lg text-white"
@@ -63,7 +81,6 @@ const DashboardPage = () => {
           setTasks={setTasksList}
           darkMode={darkMode}
         />
-
       </div>
 
       <CreateTaskModal
@@ -72,7 +89,6 @@ const DashboardPage = () => {
         addTask={addTask}
         darkMode={darkMode}
       />
-
     </div>
   );
 };
