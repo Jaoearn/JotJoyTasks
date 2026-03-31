@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Save, X, Plus } from "lucide-react";
+import { Save, Plus } from "lucide-react";
 import { Modal } from "../ui/Modal";
 
 export type TaskStatus = "todo" | "progress" | "done";

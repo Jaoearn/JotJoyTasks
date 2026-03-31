@@ -24,8 +24,6 @@ const Sidebar = ({
 }: Props) => {
 
   const totalTasks = tasks.length;
-  const todoTasks = tasks.filter(t => t.status === "todo").length;
-  const progressTasks = tasks.filter(t => t.status === "progress").length;
   const doneTasks = tasks.filter(t => t.status === "done").length;
 
   const progress = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
